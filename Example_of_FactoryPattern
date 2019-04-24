@@ -1,0 +1,80 @@
+import Cocoa
+//Declare a protocol
+protocol Income{
+   func lowerClass()
+   func middleClass()
+   func upperClass()
+}
+
+//Declare a enum that meets the types of ViewControllers needed to be made by factory( without intialization/ no functionality just declaration)
+enum incomeType{
+    case rich
+    case poor
+    case inBetween
+}
+//Make Classes inherit Protocol and get stubs
+class Chad: Income{
+    func lowerClass() {
+        print("10,000")
+    }
+    
+    func middleClass() {
+        print("40,000")
+    }
+    
+    func upperClass() {
+        print("100,000")
+    }
+}
+
+class People: Income{
+    func lowerClass() {
+        print("People lowerclass")
+    }
+    
+    func middleClass() {
+        print("People middleClass")
+    }
+    
+    func upperClass() {
+        print("upperClass")
+    }
+}
+
+
+//Createe a struct to be used as the Factory for making the ViewControllers
+struct PeopleFactory{
+    
+    //make the function static so can call thee struct without intialization must Return a value of the Protocol 
+    //we made and the Parameter must be of the Enum we made
+    static func makeClasses(theType: incomeType) -> Income{
+        
+        //variable which is of Protocol type to be returned as optional
+        let result: Income?
+        
+        //switch through our parameter which is the Enum we made
+        switch theType {
+            
+            //initialize cases
+            case .inBetween:
+            
+            //create the needed ViewController based on enum
+                result = Chad()
+            case .poor:
+                result = People()
+            case .rich:
+                result = People()
+        }
+        
+        return result!
+        }
+}
+
+//Create an object which follows the .Poor case in the Enum
+let poorPeopleObject = PeopleFactory.makeClasses(theType: .poor)
+
+//Once the object is made the function inside can be called 
+poorPeopleObject.middleClass()
+
+
+
